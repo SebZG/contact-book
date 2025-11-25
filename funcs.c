@@ -3,7 +3,7 @@
 
 #include "funcs.h"
 
-void trimNewLine(char *str)
+void trimNewline(char *str)
 {
     int len = strlen(str);
     if (len > 0 && str[len - 1] == '\n')
@@ -22,7 +22,7 @@ int isValidPhone(const char *phone)
         len--;
 
     // Lengh must be between 7 and 14
-    if (len < 7 && len > 14)
+    if (len < 7 || len > 14)
         return 0;
 
     // Must contain only digits
@@ -37,36 +37,36 @@ void addContact(void)
 {
     if (count >= MAX)
     {
-        printf("Contact book is full!\n");
+        printf("\nContact book is full!\n");
         return;
     }
 
-    printf("Enter name: ");
+    printf("\nEnter name: ");
     if (fgets(names[count], sizeof(names[count]), stdin) == NULL)
     {
-        printf("Failed to read name.\n");
+        printf("\nFailed to read name.\n");
         return;
     }
-    trimNewLine(names[count]);
+    trimNewline(names[count]);
 
     while (1)
     {
-        printf("Enter phone number: ");
+        printf("\nEnter phone number: ");
         if (fgets(phones[count], sizeof(phones[count]), stdin) == NULL)
         {
-            printf("Failed to read phone number.\n");
+            printf("\nFailed to read phone number.\n");
             return;
         }
-        trimNewLine(phones[count]);
+        trimNewline(phones[count]);
 
         if (isValidPhone(phones[count]))
             break; // Valid number;
         else
-            printf("Invalid phone number! It must be between 7-14 digits and contain "
+            printf("\nInvalid phone number! It must be between 7-14 digits and contain "
                    "only numbers.\n");
     }
 
-    printf("Contact added successfully.\n");
+    printf("\nContact added successfully.\n");
     count++;
 }
 
@@ -74,13 +74,13 @@ void displayContacts(void)
 {
     if (count == 0)
     {
-        printf("No contacts to display.\n");
+        printf("\nNo contacts to display.\n");
         return;
     }
 
     printf("\n--- Contact List ---\n");
     for (int i = 0; i < count; i++)
-        printf("%d) Name: %s, Phone: %s\n", i + 1, names[i], phones[i]);
+        printf("%d) Name: %s, Phone: %s\n\n", i + 1, names[i], phones[i]);
 }
 
 int byName(int index, const char *query)
@@ -88,7 +88,7 @@ int byName(int index, const char *query)
     if (index == count)
         return -1;
 
-    if (strcmp(names[count], query) == 0)
+    if (strcmp(names[index], query) == 0)
         return index;
 
     return byName(index + 1, query);
@@ -99,14 +99,15 @@ int byPhone(int index, const char *query)
     if (index == count)
         return -1;
 
-    if (strcmp(names[count], query) == 0)
+    if (strcmp(phones[index], query) == 0)
         return index;
 
     return byPhone(index + 1, query);
 }
 
-int search(int (*op)(int, const char *), int index, const char *query)
+int search(int (*op)(int, const char *), const char *query)
 {
+    int index = 0;
     return op(index, query);
 }
 
@@ -115,18 +116,18 @@ void deleteContact(void)
     char query[NAME_LEN];
     int index;
 
-    printf("Enter the name to delete: ");
+    printf("\nEnter the name to delete: ");
     if (fgets(query, sizeof(query), stdin) == NULL)
     {
-        printf("Failed to read input.\n");
+        printf("\nFailed to read input.\n");
         return;
     }
-    trimNewLine(query);
+    trimNewline(query);
 
-    index = search(byName, index, query);
+    index = search(byName, query);
     if (index == -1)
     {
-        printf("Contact not found.\n");
+        printf("\nContact not found.\n");
         return;
     }
 
@@ -140,5 +141,5 @@ void deleteContact(void)
         count--;
     }
 
-    printf("Contact deleted successfully.\n");
+    printf("\nContact deleted successfully.\n");
 }
