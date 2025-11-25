@@ -1,0 +1,52 @@
+[
+    {
+        // Compile the currently open C file to <filename>.exe
+        "label": "C: build current file",
+        "shell": {
+            "program": "C:/Program Files/Git/bin/bash.exe"
+            // "program": "C:/msys64/usr/bin/bash.exe"
+        },
+        "command": "gcc",
+        "args": [
+            "-std=c2x",
+            "-Wall",
+            "-Wextra",
+            "-g",
+            "\"$ZED_FILE\"",
+            "-o",
+            "\"$ZED_DIRNAME/$ZED_STEM.exe\""
+        ],
+        "cwd": "$ZED_DIRNAME"
+    },
+    {
+        // Run <filename>.exe from the same folder
+        "label": "C: run current exe",
+        "shell": {
+            // "program": "C:/msys64/usr/bin/bash.exe"
+            "program": "C:/Program Files/Git/bin/bash.exe"
+        },
+        "command": "./$ZED_STEM.exe",
+        "cwd": "$ZED_DIRNAME"
+    },
+    {
+        // One-shot: build, then run
+        "label": "C: build & run current file",
+        "shell": {
+            "program": "C:/Program Files/Git/bin/bash.exe"
+            // "program": "C:/msys64/usr/bin/bash.exe"
+        },
+        "command": "gcc",
+        "args": [
+            "-std=c2x",
+            " -Wall",
+            "-Wextra",
+            "-g",
+            "\"$ZED_FILE\"",
+            "-o",
+            "\"$ZED_DIRNAME/$ZED_STEM.exe\"",
+            "&&",
+            "\"$ZED_DIRNAME/$ZED_STEM.exe\""
+        ],
+        "cwd": "$ZED_DIRNAME"
+    }
+]

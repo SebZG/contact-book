@@ -1,0 +1,20 @@
+// Project-local debug tasks
+//
+// For more documentation on how to configure debug tasks,
+// see: https://zed.dev/docs/debugger
+[
+    {
+        "label": "Debug current C file (GDB)",
+        "adapter": "GDB",
+        "request": "launch",
+
+        // The compiled program: <directory-of-current-file>/<filename-without-ext>.exe
+        "program": "$ZED_DIRNAME/$ZED_STEM.exe",
+
+        // Run from the folder that contains main.c / main.exe
+        "cwd": "$ZED_DIRNAME",
+
+        // Optional: break as soon as main starts
+        "stopAtBeginningOfMainSubprogram": true
+    }
+]

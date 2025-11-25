@@ -1,2 +1,2 @@
-# contact-book
-A contact book in C
+# Contact Book
+A contact book written in C
