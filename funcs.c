@@ -35,12 +35,6 @@ int isValidPhone(const char *phone)
 
 void addContact(void)
 {
-    if (count >= MAX)
-    {
-        printf("\nContact book is full!\n");
-        return;
-    }
-
     printf("\nEnter name: ");
     if (fgets(names[count], sizeof(names[count]), stdin) == NULL)
     {
@@ -70,19 +64,6 @@ void addContact(void)
     count++;
 }
 
-void displayContacts(void)
-{
-    if (count == 0)
-    {
-        printf("\nNo contacts to display.\n");
-        return;
-    }
-
-    printf("\n--- Contact List ---\n");
-    for (int i = 0; i < count; i++)
-        printf("%d) Name: %s, Phone: %s\n\n", i + 1, names[i], phones[i]);
-}
-
 int byName(int index, char *query)
 {
     if (index == count)
@@ -105,9 +86,9 @@ int byPhone(int index, char *query)
     return byPhone(index + 1, query);
 }
 
-void search(int (*op)(int, char *), char *query)
+void search(int (*op)(int, char *), char *query, int q_size)
 {
-    if (fgets(query, sizeof(query), stdin) == NULL)
+    if (fgets(query, q_size, stdin) == NULL)
     {
         printf("\nFailed to read input.\n");
         return;
@@ -121,9 +102,85 @@ void search(int (*op)(int, char *), char *query)
         printf("\nFound...\n\nName: %s, Phone: %s\n", names[index], phones[index]);
 }
 
-void deleteContact(int (*op)(int, char *), char *query)
+void displayContacts(void)
 {
-    if (fgets(query, sizeof(query), stdin) == NULL)
+    printf("\n--- Contact List ---\n");
+    for (int i = 0; i < count; i++)
+        printf("%d) Name: %s, Phone: %s\n\n", i + 1, names[i], phones[i]);
+}
+
+void updateContact(int (*op)(int, char *), char *query, int q_size)
+{
+    if (fgets(query, q_size, stdin) == NULL)
+    {
+        printf("\nFailed to read input.\n");
+        return;
+    }
+    trimNewline(query);
+
+    int index = op(0, query);
+    if (index == -1)
+    {
+        printf("\nContact not found.\n");
+        return;
+    }
+
+    printf("\nCurrent Contact Info:\n\nName: %s, Phone: %s\n", names[index], phones[index]);
+
+    int choice;
+    printf("\nWhat would you like to update?\n");
+    printf("1) Name\n");
+    printf("2) Phone\n");
+    printf("3) Both\n");
+    printf("Enter choice: ");
+
+    if (scanf("%d", &choice) != 1)
+    {
+        printf("\nInvalid input.\n");
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF)
+        {
+        }
+        return;
+    }
+    getchar(); // Clear newline
+
+    if (choice == 1 || choice == 3)
+    {
+        printf("\nEnter new name: ");
+        if (fgets(names[index], NAME_LEN, stdin) == NULL)
+        {
+            printf("\nFailed to read name.\n");
+            return;
+        }
+        trimNewline(names[index]);
+    }
+
+    if (choice == 2 || choice == 3)
+    {
+        while (1)
+        {
+            printf("\nEnter new phone number: ");
+            if (fgets(phones[index], PHONE_LEN, stdin) == NULL)
+            {
+                printf("\nFailed to read phone.\n");
+                return;
+            }
+            trimNewline(phones[index]);
+
+            if (isValidPhone(phones[index]))
+                break;
+            else
+                printf("\nInvalid phone number! It must be between 7-14 digits and contain only numbers.\n");
+        }
+    }
+
+    printf("\nContact updated successfuly.\n");
+}
+
+void deleteContact(int (*op)(int, char *), char *query, int q_size)
+{
+    if (fgets(query, q_size, stdin) == NULL)
     {
         printf("\nFailed to read input.\n");
         return;
