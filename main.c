@@ -21,7 +21,7 @@ int main()
 {
     int choice;
     char query[NAME_LEN];
-    int index;
+    int index = 0;
 
     while (1)
     {
@@ -54,26 +54,12 @@ int main()
 
         case 2:
             printf("\nEnter name to search: ");
-            if (fgets(query, sizeof(query), stdin) == NULL)
-                break;
-            trimNewline(query);
-            index = search(byName, query);
-            if (index == -1)
-                printf("\nContact not found.\n");
-            else
-                printf("\nFound...\n\nName: %s, Phone: %s\n", names[index], phones[index]);
+            search(byName, query);
             break;
 
         case 3:
             printf("\nEnter phone number to search: ");
-            if (fgets(query, sizeof(query), stdin) == NULL)
-                break;
-            trimNewline(query);
-            index = search(byPhone, query);
-            if (index == -1)
-                printf("\nContact not found.\n");
-            else
-                printf("\nFound...\n\nName: %s, Phone: %s\n", names[index], phones[index]);
+            search(byPhone, query);
             break;
 
         case 4:
@@ -81,7 +67,8 @@ int main()
             break;
 
         case 5:
-            deleteContact();
+            printf("\nEnter name to delete: ");
+            deleteContact(byName, query);
             break;
 
         case 6:

@@ -19,7 +19,7 @@ int isValidPhone(const char *phone);
 // Operations
 void addContact(void);
 void displayContacts(void);
-int byName(int index, const char *query);
-int byPhone(int index, const char *query);
-int search(int (*op)(int, const char *), const char *query);
-void deleteContact(void);
+int byName(int index, char *query);
+int byPhone(int index, char *query);
+void search(int (*op)(int, char *), char *query);
+void deleteContact(int (*op)(int, char *), char *query);

@@ -83,7 +83,7 @@ void displayContacts(void)
         printf("%d) Name: %s, Phone: %s\n\n", i + 1, names[i], phones[i]);
 }
 
-int byName(int index, const char *query)
+int byName(int index, char *query)
 {
     if (index == count)
         return -1;
@@ -94,7 +94,7 @@ int byName(int index, const char *query)
     return byName(index + 1, query);
 }
 
-int byPhone(int index, const char *query)
+int byPhone(int index, char *query)
 {
     if (index == count)
         return -1;
@@ -105,18 +105,8 @@ int byPhone(int index, const char *query)
     return byPhone(index + 1, query);
 }
 
-int search(int (*op)(int, const char *), const char *query)
+void search(int (*op)(int, char *), char *query)
 {
-    int index = 0;
-    return op(index, query);
-}
-
-void deleteContact(void)
-{
-    char query[NAME_LEN];
-    int index;
-
-    printf("\nEnter the name to delete: ");
     if (fgets(query, sizeof(query), stdin) == NULL)
     {
         printf("\nFailed to read input.\n");
@@ -124,7 +114,23 @@ void deleteContact(void)
     }
     trimNewline(query);
 
-    index = search(byName, query);
+    int index = op(0, query);
+    if (index == -1)
+        printf("\nContact not found.\n");
+    else
+        printf("\nFound...\n\nName: %s, Phone: %s\n", names[index], phones[index]);
+}
+
+void deleteContact(int (*op)(int, char *), char *query)
+{
+    if (fgets(query, sizeof(query), stdin) == NULL)
+    {
+        printf("\nFailed to read input.\n");
+        return;
+    }
+    trimNewline(query);
+
+    int index = op(0, query);
     if (index == -1)
     {
         printf("\nContact not found.\n");
@@ -134,8 +140,8 @@ void deleteContact(void)
     // If it's the last contact, just reduce count
     if (index == count - 1)
         count--;
-    else
-    { // Copy last to correct index and reduce count
+    else // Copy last to correct index and reduce count
+    {
         strcpy(names[index], names[count - 1]);
         strcpy(phones[index], phones[count - 1]);
         count--;
