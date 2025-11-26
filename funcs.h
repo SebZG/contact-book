@@ -21,5 +21,6 @@ void addContact(void);
 void displayContacts(void);
 int byName(int index, char *query);
 int byPhone(int index, char *query);
-void search(int (*op)(int, char *), char *query);
-void deleteContact(int (*op)(int, char *), char *query);
+void search(int (*op)(int, char *), char *query, int q_size);
+void updateContact(int (*op)(int, char *), char *query, int q_size);
+void deleteContact(int (*op)(int, char *), char *query, int q_size);

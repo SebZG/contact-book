@@ -30,8 +30,9 @@ int main()
         printf("2. Search by Name\n");
         printf("3. Search by Phone\n");
         printf("4. Display All Contacts\n");
-        printf("5. Delete Contact\n");
-        printf("6. Exit\n");
+        printf("5. Update Contact\n");
+        printf("6. Delete Contact\n");
+        printf("7. Exit\n");
         printf("\nEnter your choice: ");
 
         if (scanf("%d", &choice) != 1)
@@ -49,29 +50,82 @@ int main()
         switch (choice)
         {
         case 1:
-            addContact();
-            break;
+            if (count >= MAX)
+            {
+                printf("\nContact book is full!\n");
+                break;
+            }
+            else
+            {
+                addContact();
+                break;
+            }
 
         case 2:
-            printf("\nEnter name to search: ");
-            search(byName, query);
-            break;
+            if (count == 0)
+            {
+                printf("\nNo contacts to search.\n");
+                break;
+            }
+            else
+            {
+                printf("\nEnter name to search: ");
+                search(byName, query, NAME_LEN);
+                break;
+            }
 
         case 3:
-            printf("\nEnter phone number to search: ");
-            search(byPhone, query);
-            break;
+            if (count == 0)
+            {
+                printf("\nNo contacts to search.\n");
+                break;
+            }
+            else
+            {
+                printf("\nEnter phone number to search: ");
+                search(byPhone, query, PHONE_LEN);
+                break;
+            }
 
         case 4:
-            displayContacts();
-            break;
+            if (count == 0)
+            {
+                printf("\nNo contacts to display.\n");
+                break;
+            }
+            else
+            {
+                displayContacts();
+                break;
+            }
 
         case 5:
-            printf("\nEnter name to delete: ");
-            deleteContact(byName, query);
-            break;
+            if (count == 0)
+            {
+                printf("\nNo contacts to update.\n");
+                break;
+            }
+            else
+            {
+                printf("\nEnter name to update: ");
+                updateContact(byName, query, NAME_LEN);
+                break;
+            }
 
         case 6:
+            if (count == 0)
+            {
+                printf("\nNo contacts to delete.\n");
+                break;
+            }
+            else
+            {
+                printf("\nEnter name to delete: ");
+                deleteContact(byName, query, NAME_LEN);
+                break;
+            }
+
+        case 7:
             printf("\nExiting Contact Book. Goodbye!\n");
             return 0;
 
